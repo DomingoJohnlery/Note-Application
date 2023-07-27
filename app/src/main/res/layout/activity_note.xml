@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/singleLine"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentTop="true"
@@ -50,15 +50,15 @@
             android:id="@+id/multiLine"
             android:layout_width="488dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/editTextText"
+            android:layout_below="@id/singleLine"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
+            android:autofillHints="description"
             android:background="@color/white"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Description"
-            android:inputType="textMultiLine"
-            android:autofillHints="description" />
+            android:inputType="textMultiLine" />
     </RelativeLayout>
 
     <Button
