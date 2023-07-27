@@ -1,12 +1,14 @@
 package com.mycam.noteapp
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.kotlin.query.RealmResults
 
-class NoteAdapter(private val dataSet: Array<String>) :
+class NoteAdapter(private val context: Context, private val dataSet: RealmResults<Note>) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val title: TextView
@@ -21,15 +23,16 @@ class NoteAdapter(private val dataSet: Array<String>) :
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_view,parent,false)
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.title.text = dataSet[position]
-        holder.description.text = dataSet[position]
-        holder.timeCreated.text = dataSet[position]
+        val note: Note = dataSet[position]
+        holder.title.text = note.title
+        holder.description.text = note.description
+        holder.timeCreated.text = note.createdTime.toString()
     }
 
     override fun getItemCount() = dataSet.size
