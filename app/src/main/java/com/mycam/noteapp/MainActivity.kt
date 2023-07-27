@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val config = RealmConfiguration.create(schema = setOf(Note::class))
         val realm: Realm = Realm.open(config)
 
-        val notes: RealmResults<Note> = realm.query<Note>().find()
+        //val notes: RealmResults<Note> = realm.query<Note>().find()
 
         binding.btnAddNote.setOnClickListener {
             startActivity(Intent(this,NoteActivity::class.java))
