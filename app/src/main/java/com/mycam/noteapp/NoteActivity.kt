@@ -2,6 +2,7 @@ package com.mycam.noteapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.mycam.noteapp.databinding.ActivityNoteBinding
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -16,6 +17,7 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         config = RealmConfiguration.create(schema = setOf(Note::class))
         realm = Realm.open(config)
 
@@ -33,5 +35,11 @@ class NoteActivity : AppCompatActivity() {
                 createdTime = System.currentTimeMillis()
             })
         }
+        Toast.makeText(this,"Note saved successfully!",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

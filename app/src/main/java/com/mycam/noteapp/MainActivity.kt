@@ -1,12 +1,12 @@
 package com.mycam.noteapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.mycam.noteapp.databinding.ActivityMainBinding
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -17,12 +17,14 @@ import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recyclerView: RecyclerView
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = NoteAdapter(this,notes)
         recyclerView.adapter = adapter
-
         val notesListener = CoroutineScope(Dispatchers.Default).launch {
             // create a Flow from the Item collection, then add a listener to the Flow
             val notesFlow = notes.asFlow()
@@ -45,14 +46,9 @@ class MainActivity : AppCompatActivity() {
                 when (changes) {
                     // UpdatedResults means this change represents an update/insert/delete operation
                     is UpdatedResults -> {
-                        changes.insertions // indexes of inserted objects
-                        changes.insertionRanges // ranges of inserted objects
-                        changes.changes // indexes of modified objects
-                        changes.changeRanges // ranges of modified objects
-                        changes.deletions // indexes of deleted objects
-                        changes.deletionRanges // ranges of deleted objects
-                        changes.list // the full collection of objects
-                        //adapter.notifyDataSetChanged()
+                        withContext(Dispatchers.Main){
+                            adapter.notifyDataSetChanged()
+                        }
                     }
                     else -> {
                         // types other than UpdatedResults are not changes -- ignore them
@@ -60,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        //if (notesListener.isCompleted){ }
 
         binding.btnAddNote.setOnClickListener {
             startActivity(Intent(this,NoteActivity::class.java))
