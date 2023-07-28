@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.kotlin.query.RealmResults
 
-class NoteAdapter(private val context: Context, private val dataSet: RealmResults<Note>) :
+class NoteAdapter(private val context: Context, private var dataSet: RealmResults<Note>) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val title: TextView
@@ -36,4 +36,9 @@ class NoteAdapter(private val context: Context, private val dataSet: RealmResult
     }
 
     override fun getItemCount() = dataSet.size
+
+    fun updateData(notes: RealmResults<Note>) {
+        this.dataSet = notes
+        notifyDataSetChanged()
+    }
 }

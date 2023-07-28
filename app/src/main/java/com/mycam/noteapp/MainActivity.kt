@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recyclerView: RecyclerView
+    private lateinit var realm: Realm
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val config = RealmConfiguration.create(schema = setOf(Note::class))
-        val realm: Realm = Realm.open(config)
+        realm = Realm.open(config)
 
         val notes: RealmResults<Note> = realm.query<Note>().find()
 
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     // UpdatedResults means this change represents an update/insert/delete operation
                     is UpdatedResults -> {
                         withContext(Dispatchers.Main){
-                            adapter.notifyDataSetChanged()
+                            adapter.updateData(realm.query<Note>().find())
                         }
                     }
                     else -> {
@@ -61,5 +62,9 @@ class MainActivity : AppCompatActivity() {
         binding.btnAddNote.setOnClickListener {
             startActivity(Intent(this,NoteActivity::class.java))
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }
