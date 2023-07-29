@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0242c2"
-    tools:context=".NoteActivity">
+    tools:context=".EditActivity">
 
     <TextView
-        android:id="@+id/tvAddHeader"
+        android:id="@+id/tvEditHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
-        android:text="Add New Note"
+        android:text="Edit Note"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -23,16 +23,16 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditNote"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddHeader">
+        app:layout_constraintTop_toBottomOf="@+id/tvEditHeader">
 
         <EditText
-            android:id="@+id/singleLine"
+            android:id="@+id/editTitle"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentTop="true"
@@ -47,10 +47,10 @@
             android:autofillHints="title" />
 
         <EditText
-            android:id="@+id/multiLine"
+            android:id="@+id/editDescription"
             android:layout_width="488dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/singleLine"
+            android:layout_below="@id/editTitle"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:autofillHints="description"
@@ -62,14 +62,14 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btnSaveNote"
+        android:id="@+id/btnEditNote"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="188dp"
-        android:text="Save Note"
+        android:text="Edit Note"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

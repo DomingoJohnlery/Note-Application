@@ -1,6 +1,8 @@
 package com.mycam.noteapp
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -43,9 +45,17 @@ class NoteAdapter(private val context: Context, private var dataSet: RealmResult
 
         holder.itemView.setOnLongClickListener {
             val menu = PopupMenu(context,it)
+            menu.menu.add("EDIT")
             menu.menu.add("DELETE")
             menu.setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.title) {
+                    "EDIT" -> {
+                        val noteData = Bundle()
+                        noteData.putString("title",note.title)
+                        noteData.putString("desc",note.description)
+                        context.startActivity(Intent(context,EditActivity::class.java).putExtras(noteData))
+                        true
+                    }
                     "DELETE" -> {
                         val config = RealmConfiguration.create(schema = setOf(Note::class))
                         val realm = Realm.open(config)
@@ -56,7 +66,6 @@ class NoteAdapter(private val context: Context, private var dataSet: RealmResult
                         Toast.makeText(context,"Note deleted successfully!", Toast.LENGTH_SHORT).show()
                         true
                     }
-
                     else -> false
                 }
             }
