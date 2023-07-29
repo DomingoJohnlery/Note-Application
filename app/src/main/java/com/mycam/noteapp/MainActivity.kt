@@ -14,6 +14,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val config = RealmConfiguration.create(schema = setOf(Note::class))
         realm = Realm.open(config)
 
-        val notes: RealmResults<Note> = realm.query<Note>().find()
+        val notes: RealmResults<Note> = realm.query<Note>().sort("createdTime",Sort.DESCENDING).find()
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                     // UpdatedResults means this change represents an update/insert/delete operation
                     is UpdatedResults -> {
                         withContext(Dispatchers.Main){
-                            adapter.updateData(realm.query<Note>().find())
+                            adapter.updateData(realm.query<Note>().sort("createdTime",Sort.DESCENDING).find())
                         }
                     }
                     else -> {
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        //if (notesListener.isCompleted){ }
 
         binding.btnAddNote.setOnClickListener {
             startActivity(Intent(this,NoteActivity::class.java))

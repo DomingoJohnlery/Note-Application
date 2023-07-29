@@ -2,11 +2,17 @@ package com.mycam.noteapp
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.query.RealmResults
+import java.text.DateFormat
 
 class NoteAdapter(private val context: Context, private var dataSet: RealmResults<Note>) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
@@ -32,11 +38,34 @@ class NoteAdapter(private val context: Context, private var dataSet: RealmResult
         val note: Note = dataSet[position]
         holder.title.text = note.title
         holder.description.text = note.description
-        holder.timeCreated.text = note.createdTime.toString()
+        val formatTime = DateFormat.getDateTimeInstance().format(note.createdTime)
+        holder.timeCreated.text = formatTime
+
+        holder.itemView.setOnLongClickListener {
+            val menu = PopupMenu(context,it)
+            menu.menu.add("DELETE")
+            menu.setOnMenuItemClickListener { menuItem: MenuItem ->
+                when (menuItem.title) {
+                    "DELETE" -> {
+                        val config = RealmConfiguration.create(schema = setOf(Note::class))
+                        val realm = Realm.open(config)
+                        realm.writeBlocking {
+                            findLatest(note)?.let { it -> delete(it) }
+                        }
+                        realm.close()
+                        Toast.makeText(context,"Note deleted successfully!", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            menu.show()
+            true
+        }
     }
 
     override fun getItemCount() = dataSet.size
-
     fun updateData(notes: RealmResults<Note>) {
         this.dataSet = notes
         notifyDataSetChanged()
