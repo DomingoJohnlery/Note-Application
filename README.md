@@ -1,5 +1,5 @@
 # Note-Application
-A note application that allows the user to create a note, edit or delete.
+A note taking application that allows the user to create a note, edit or delete.
 Using a recyclerView the notes are displayed and updated everytime changes happen in the local database.
 # What I Have Learned
 * Displaying data in a RecyclerView from Realm Database
