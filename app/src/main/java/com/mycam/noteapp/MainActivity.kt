@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mycam.noteapp.databinding.ActivityMainBinding
@@ -41,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = NoteAdapter(this,notes)
         recyclerView.adapter = adapter
+
         val notesListener = CoroutineScope(Dispatchers.Default).launch {
             // create a Flow from the Item collection, then add a listener to the Flow
             val notesFlow = notes.asFlow()
@@ -52,9 +52,7 @@ class MainActivity : AppCompatActivity() {
                             adapter.updateData(realm.query<Note>().sort("createdTime",Sort.DESCENDING).find())
                         }
                     }
-                    else -> {
-                        // types other than UpdatedResults are not changes -- ignore them
-                    }
+                    else -> { }// types other than UpdatedResults are not changes -- ignore them
                 }
             }
         }
