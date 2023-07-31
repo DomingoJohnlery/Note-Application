@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="24sp"/>
 
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
+        android:textColor="@color/black"
         android:layout_below="@id/title"/>
 
     <TextView
@@ -26,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Month Day Year"
+        android:textColor="@color/black"
         android:gravity="end"
         android:textSize="12sp"
         android:layout_below="@id/description"/>
